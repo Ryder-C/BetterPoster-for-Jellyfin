@@ -1,6 +1,6 @@
 # Btttr Posters - Jellyfin Plugin
 
-"imageUrl": "https://raw.githubusercontent.com/TheAceOfficials/BetterPoster-for-Jellyfin/main/cover.PNG",
+"imageUrl": "https://raw.githubusercontent.com/TheAceOfficials/BetterPoster-for-Jellyfin/main/cover.PNG"
 
 Automatically fetches and applies high-quality custom posters with overlays from [btttr.cc](https://btttr.cc) for your Jellyfin media library. 
 

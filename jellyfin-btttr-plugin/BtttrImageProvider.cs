@@ -52,7 +52,7 @@ namespace Jellyfin.Plugin.BtttrPosters
             if (string.IsNullOrEmpty(imdbId))
             {
                 _logger.LogWarning("Btttr Image Provider: IMDB ID not found for item: {Name}. Cannot fetch btttr.cc custom poster.", item.Name);
-                return images;
+                return Task.FromResult<IEnumerable<RemoteImageInfo>>(images);
             }
 
             // Ensure IMDb ID starts with "tt" (normal IMDb format, e.g., tt10919420)

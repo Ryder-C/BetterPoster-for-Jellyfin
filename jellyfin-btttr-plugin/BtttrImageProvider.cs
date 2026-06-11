@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
@@ -16,12 +16,12 @@ namespace Jellyfin.Plugin.BtttrPosters
 {
     public class BtttrImageProvider : IRemoteImageProvider, IHasOrder
     {
-        private readonly IHttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<BtttrImageProvider> _logger;
 
-        public BtttrImageProvider(IHttpClient httpClient, ILogger<BtttrImageProvider> logger)
+        public BtttrImageProvider(IHttpClientFactory httpClientFactory, ILogger<BtttrImageProvider> logger)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
 
@@ -82,14 +82,11 @@ namespace Jellyfin.Plugin.BtttrPosters
             return images;
         }
 
-        public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Fetching custom poster from Btttr: {Url}", url);
-            return _httpClient.GetResponse(new HttpRequestOptions
-            {
-                Url = url,
-                CancellationToken = cancellationToken
-            });
+            var client = _httpClientFactory.CreateClient(Name);
+            return client.GetAsync(url, cancellationToken);
         }
     }
 }

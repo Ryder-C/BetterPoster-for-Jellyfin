@@ -6,6 +6,7 @@
     "overview": "Automatically fetches matching custom posters with overlays from btttr.cc based on IMDb ID.",
     "owner": "TheAceOfficials",
     "category": "Metadata",
+    "imageUrl": "https://raw.githubusercontent.com/TheAceOfficials/BetterPoster-for-Jellyfin/main/cover.png",
     "versions": [
       {
         "version": "1.0.0.0",

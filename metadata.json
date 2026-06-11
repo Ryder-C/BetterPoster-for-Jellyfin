@@ -1,0 +1,6 @@
+{
+  "name": "Jellyfin Poster Manager",
+  "description": "A standalone web interface to manage and update custom posters on your Jellyfin server, similar to custom poster curation apps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

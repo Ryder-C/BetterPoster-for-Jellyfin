@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Btttr Posters Configuration</title>
+</head>
+<body>
+    <div id="BtttrPostersConfigPage" class="page type-interior pluginConfigurationPage" data-require="emby-button,emby-input,emby-select">
+        <div class="content-primary">
+            <form id="BtttrPostersConfigForm">
+                <div class="sectionTitleContainer flex align-items-center justify-content-between">
+                    <h2 class="sectionTitle">Btttr Posters Configuration</h2>
+                </div>
+
+                <div class="verticalFormContainer">
+                    <div class="selectContainer">
+                        <label for="selectLayout">Default Poster Layout Badge Style</label>
+                        <select is="emby-select" id="selectLayout" name="LayoutStyle" class="emby-select">
+                            <option value="poster-default">Standard Default (Trending Pill)</option>
+                            <option value="poster-no-badge">No Top Badge (Only Bottom Description)</option>
+                            <option value="poster-rating-only">Rating Only / Empty Top</option>
+                        </select>
+                        <div class="fieldDescription">
+                            Select the default theme structure format to pull from btttr.cc endpoints.
+                        </div>
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkFallback" name="FallbackToTmdbText" />
+                            <span>Fallback if ID query lacks details</span>
+                        </label>
+                        <div class="fieldDescription checkboxFieldDescription">
+                            Enable automatic fallback if metadata keys are missing.
+                        </div>
+                    </div>
+
+                    <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                        <span>Save Configuration</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

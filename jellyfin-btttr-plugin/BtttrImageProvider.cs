@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using MediaBrowser.Common.Net;
+using MediaBrowser.Controller.Entities;
+using MediaBrowser.Controller.Entities.Movies;
+using MediaBrowser.Controller.Entities.TV;
+using MediaBrowser.Controller.Providers;
+using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+
+namespace Jellyfin.Plugin.BtttrPosters
+{
+    public class BtttrImageProvider : IRemoteImageProvider, IHasOrder
+    {
+        private readonly IHttpClient _httpClient;
+        private readonly ILogger<BtttrImageProvider> _logger;
+
+        public BtttrImageProvider(IHttpClient httpClient, ILogger<BtttrImageProvider> logger)
+        {
+            _httpClient = httpClient;
+            _logger = logger;
+        }
+
+        public string Name => "Btttr Posters";
+
+        public int Order => 0; // Highest priority - displays as the first choice
+
+        public bool Supports(BaseItem item)
+        {
+            // Only movies and series (TV Shows) support custom poster overlays
+            return item is Movie || item is Series;
+        }
+
+        public IEnumerable<ImageType> GetSupportedImages(BaseItem item)
+        {
+            return new[] { ImageType.Primary };
+        }
+
+        public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        {
+            var images = new List<RemoteImageInfo>();
+            
+            // Extract the IMDb Identifier from Jellyfin's metadata item links
+            string imdbId = item.GetProviderId(MetadataProvider.Imdb);
+
+            _logger.LogInformation("Processing Btttr Image Provider for item: {Name}", item.Name);
+
+            if (string.IsNullOrEmpty(imdbId))
+            {
+                _logger.LogWarning("Btttr Image Provider: IMDB ID not found for item: {Name}. Cannot fetch btttr.cc custom poster.", item.Name);
+                return images;
+            }
+
+            // Ensure IMDb ID starts with "tt" (normal IMDb format, e.g., tt10919420)
+            if (!imdbId.StartsWith("tt", StringComparison.OrdinalIgnoreCase))
+            {
+                imdbId = "tt" + imdbId;
+            }
+
+            // Standard layout is 'poster-default'. Other choices can be injected.
+            var layout = Plugin.Instance?.Configuration?.LayoutStyle ?? "poster-default";
+
+            // Generate Btttr.cc URL
+            // Format: https://btttr.cc/poster/imdb/{layout}/{imdb_id}.jpg
+            // Example: https://btttr.cc/poster/imdb/poster-default/tt10919420.jpg
+            string btttrUrl = $"https://btttr.cc/poster/imdb/{layout}/{imdbId}.jpg";
+
+            _logger.LogInformation("Generating Btttr.cc URL format: {Url}", btttrUrl);
+
+            images.Add(new RemoteImageInfo
+            {
+                ProviderName = Name,
+                Url = btttrUrl,
+                ThumbnailUrl = btttrUrl,
+                Type = ImageType.Primary
+            });
+
+            return images;
+        }
+
+        public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Fetching custom poster from Btttr: {Url}", url);
+            return _httpClient.GetResponse(new HttpRequestOptions
+            {
+                Url = url,
+                CancellationToken = cancellationToken
+            });
+        }
+    }
+}

@@ -40,12 +40,12 @@ namespace Jellyfin.Plugin.BtttrPosters
             return new[] { ImageType.Primary };
         }
 
-        public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
         {
             var images = new List<RemoteImageInfo>();
             
             // Extract the IMDb Identifier from Jellyfin's metadata item links
-            string imdbId = item.GetProviderId(MetadataProvider.Imdb);
+            string? imdbId = item.GetProviderId(MetadataProvider.Imdb);
 
             _logger.LogInformation("Processing Btttr Image Provider for item: {Name}", item.Name);
 
@@ -79,7 +79,7 @@ namespace Jellyfin.Plugin.BtttrPosters
                 Type = ImageType.Primary
             });
 
-            return images;
+            return Task.FromResult<IEnumerable<RemoteImageInfo>>(images);
         }
 
         public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)

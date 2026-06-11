@@ -1,5 +1,7 @@
 # Btttr Posters - Jellyfin Plugin
 
+"imageUrl": "https://raw.githubusercontent.com/TheAceOfficials/BetterPoster-for-Jellyfin/main/cover.PNG",
+
 Automatically fetches and applies high-quality custom posters with overlays from [btttr.cc](https://btttr.cc) for your Jellyfin media library. 
 
 This plugin uses the IMDb ID of your movies and TV shows to find matching posters on Btttr and sets them as the primary image in Jellyfin.

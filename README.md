@@ -31,6 +31,8 @@ You can easily install this plugin by adding the custom repository to your Jelly
 3. Click on it and select **Install**.
 4. Confirm the installation.
 
+  ![Guide](https://raw.githubusercontent.com/TheAceOfficials/BetterPoster-for-Jellyfin/main/setup.JPG)
+
 ### Step 3: Restart Jellyfin
 For the plugin to take effect, you must restart your Jellyfin server.
 - **Windows:** Right-click the Jellyfin tray icon and select "Restart", or restart the Jellyfin service from the Services app.

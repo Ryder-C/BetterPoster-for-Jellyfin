@@ -1,0 +1,13 @@
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/bin/Release/net8.0/Jellyfin.Plugin.BtttrPosters.deps.json
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/bin/Release/net8.0/Jellyfin.Plugin.BtttrPosters.dll
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/bin/Release/net8.0/Jellyfin.Plugin.BtttrPosters.pdb
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/BtttrPosterPlugin.csproj.AssemblyReference.cache
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/BtttrPosterPlugin.GeneratedMSBuildEditorConfig.editorconfig
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/BtttrPosterPlugin.AssemblyInfoInputs.cache
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/BtttrPosterPlugin.AssemblyInfo.cs
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/BtttrPosterPlugin.csproj.CoreCompileInputs.cache
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/BtttrPosterPlugin.sourcelink.json
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/Jellyfin.Plugin.BtttrPosters.dll
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/refint/Jellyfin.Plugin.BtttrPosters.dll
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/Jellyfin.Plugin.BtttrPosters.pdb
+/home/ryder/Code/BetterPoster-for-Jellyfin/jellyfin-btttr-plugin/obj/Release/net8.0/ref/Jellyfin.Plugin.BtttrPosters.dll

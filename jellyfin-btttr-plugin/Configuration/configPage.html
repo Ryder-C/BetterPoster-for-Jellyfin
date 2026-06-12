@@ -5,82 +5,58 @@
     <title>Btttr Posters Configuration</title>
 </head>
 <body>
-    <div id="BtttrPostersConfigPage" class="page type-interior pluginConfigurationPage" data-require="emby-button,emby-input,emby-select">
-        <div class="content-primary">
-            <form id="BtttrPostersConfigForm">
-                <div class="sectionTitleContainer flex align-items-center justify-content-between">
-                    <h2 class="sectionTitle">Btttr Posters Configuration</h2>
-                </div>
-
-                <div class="verticalFormContainer">
-                    <div class="selectContainer">
-                        <label for="selectLayout">Default Poster Layout Badge Style</label>
-                        <select is="emby-select" id="selectLayout" name="LayoutStyle" class="emby-select">
-                            <option value="poster-default">Standard Default (Trending Pill)</option>
-                            <option value="poster-no-badge">No Top Badge (Only Bottom Description)</option>
-                            <option value="poster-rating-only">Rating Only / Empty Top</option>
-                        </select>
-                        <div class="fieldDescription">
-                            Select the default theme structure format to pull from btttr.cc endpoints.
-                        </div>
+    <div id="BtttrPostersConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-button,emby-input">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="BtttrPostersConfigForm">
+                    <div class="sectionTitleContainer flex align-items-center justify-content-between">
+                        <h2 class="sectionTitle">Btttr Posters Configuration</h2>
                     </div>
 
-                    <div class="inputContainer">
-                        <label for="txtUrlTemplate">Btttr URL Template</label>
-                        <input is="emby-input" type="text" id="txtUrlTemplate" name="UrlTemplate" class="emby-input" />
-                        <div class="fieldDescription">
-                            The URL used to fetch posters from btttr.cc. Use the placeholders
-                            <code>{imdb_id}</code> and <code>{layout}</code>, which are replaced at request time.
-                            Example: <code>https://btttr.cc/poster-n/imdb/poster-default/{imdb_id}.jpg?tag=none</code>
+                    <div class="verticalFormContainer">
+                        <div class="inputContainer">
+                            <label for="txtUrlTemplate">Btttr URL</label>
+                            <input is="emby-input" type="text" id="txtUrlTemplate" name="UrlTemplate" class="emby-input" />
+                            <div class="fieldDescription">
+                                The URL used to fetch posters from btttr.cc. Use the placeholder
+                                <code>{imdb_id}</code>, which is replaced with each item's IMDb ID at request time.
+                                Example: <code>https://btttr.cc/poster-n/imdb/poster-default/{imdb_id}.jpg?tag=none</code>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label>
-                            <input is="emby-checkbox" type="checkbox" id="chkFallback" name="FallbackToTmdbText" />
-                            <span>Fallback if ID query lacks details</span>
-                        </label>
-                        <div class="fieldDescription checkboxFieldDescription">
-                            Enable automatic fallback if metadata keys are missing.
-                        </div>
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Save Configuration</span>
+                        </button>
                     </div>
-
-                    <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-                        <span>Save Configuration</span>
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript">
-        (function () {
-            var pluginId = "b1ea6fb2-e42a-4632-841f-82ffba8307db";
+        var BtttrConfig = {
+            pluginUniqueId: 'b1ea6fb2-e42a-4632-841f-82ffba8307db'
+        };
 
-            document.querySelector('#BtttrPostersConfigPage').addEventListener('pageshow', function () {
-                Dashboard.showLoadingMsg();
-                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-                    document.querySelector('#selectLayout').value = config.LayoutStyle || 'poster-default';
-                    document.querySelector('#txtUrlTemplate').value = config.UrlTemplate || '';
-                    document.querySelector('#chkFallback').checked = !!config.FallbackToTmdbText;
-                    Dashboard.hideLoadingMsg();
+        document.querySelector('#BtttrPostersConfigPage').addEventListener('pageshow', function () {
+            Dashboard.showLoadingMsg();
+            ApiClient.getPluginConfiguration(BtttrConfig.pluginUniqueId).then(function (config) {
+                document.querySelector('#txtUrlTemplate').value = config.UrlTemplate || '';
+                Dashboard.hideLoadingMsg();
+            });
+        });
+
+        document.querySelector('#BtttrPostersConfigForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            Dashboard.showLoadingMsg();
+            ApiClient.getPluginConfiguration(BtttrConfig.pluginUniqueId).then(function (config) {
+                config.UrlTemplate = document.querySelector('#txtUrlTemplate').value;
+                ApiClient.updatePluginConfiguration(BtttrConfig.pluginUniqueId, config).then(function (result) {
+                    Dashboard.processPluginConfigurationUpdateResult(result);
                 });
             });
-
-            document.querySelector('#BtttrPostersConfigForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-                Dashboard.showLoadingMsg();
-                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-                    config.LayoutStyle = document.querySelector('#selectLayout').value;
-                    config.UrlTemplate = document.querySelector('#txtUrlTemplate').value;
-                    config.FallbackToTmdbText = document.querySelector('#chkFallback').checked;
-                    ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
-                        Dashboard.processPluginConfigurationUpdateResult(result);
-                    });
-                });
-                return false;
-            });
-        })();
+            return false;
+        });
     </script>
 </body>
 </html>

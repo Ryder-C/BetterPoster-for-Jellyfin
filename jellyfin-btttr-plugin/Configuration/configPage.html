@@ -25,6 +25,16 @@
                         </div>
                     </div>
 
+                    <div class="inputContainer">
+                        <label for="txtUrlTemplate">Btttr URL Template</label>
+                        <input is="emby-input" type="text" id="txtUrlTemplate" name="UrlTemplate" class="emby-input" />
+                        <div class="fieldDescription">
+                            The URL used to fetch posters from btttr.cc. Use the placeholders
+                            <code>{imdb_id}</code> and <code>{layout}</code>, which are replaced at request time.
+                            Example: <code>https://btttr.cc/poster-n/imdb/poster-default/{imdb_id}.jpg?tag=none</code>
+                        </div>
+                    </div>
+
                     <div class="checkboxContainer checkboxContainer-withDescription">
                         <label>
                             <input is="emby-checkbox" type="checkbox" id="chkFallback" name="FallbackToTmdbText" />
@@ -42,5 +52,35 @@
             </form>
         </div>
     </div>
+
+    <script type="text/javascript">
+        (function () {
+            var pluginId = "b1ea6fb2-e42a-4632-841f-82ffba8307db";
+
+            document.querySelector('#BtttrPostersConfigPage').addEventListener('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    document.querySelector('#selectLayout').value = config.LayoutStyle || 'poster-default';
+                    document.querySelector('#txtUrlTemplate').value = config.UrlTemplate || '';
+                    document.querySelector('#chkFallback').checked = !!config.FallbackToTmdbText;
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+
+            document.querySelector('#BtttrPostersConfigForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    config.LayoutStyle = document.querySelector('#selectLayout').value;
+                    config.UrlTemplate = document.querySelector('#txtUrlTemplate').value;
+                    config.FallbackToTmdbText = document.querySelector('#chkFallback').checked;
+                    ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+                return false;
+            });
+        })();
+    </script>
 </body>
 </html>

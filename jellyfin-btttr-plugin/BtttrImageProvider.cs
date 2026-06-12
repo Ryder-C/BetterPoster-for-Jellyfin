@@ -64,10 +64,21 @@ namespace Jellyfin.Plugin.BtttrPosters
             // Standard layout is 'poster-default'. Other choices can be injected.
             var layout = Plugin.Instance?.Configuration?.LayoutStyle ?? "poster-default";
 
-            // Generate Btttr.cc URL
-            // Format: https://btttr.cc/poster/imdb/{layout}/{imdb_id}.jpg
-            // Example: https://btttr.cc/poster/imdb/poster-default/tt10919420.jpg
-            string btttrUrl = $"https://btttr.cc/poster/imdb/{layout}/{imdbId}.jpg";
+            // The URL template is configurable from the plugin settings page.
+            // It supports the placeholders {imdb_id} and {layout}.
+            // Default: https://btttr.cc/poster/imdb/{layout}/{imdb_id}.jpg
+            // Example: https://btttr.cc/poster-n/imdb/poster-default/{imdb_id}.jpg?tag=none
+            var urlTemplate = Plugin.Instance?.Configuration?.UrlTemplate;
+            if (string.IsNullOrWhiteSpace(urlTemplate))
+            {
+                urlTemplate = "https://btttr.cc/poster/imdb/{layout}/{imdb_id}.jpg";
+            }
+
+            // Generate Btttr.cc URL by substituting the placeholders.
+            // Example result: https://btttr.cc/poster/imdb/poster-default/tt10919420.jpg
+            string btttrUrl = urlTemplate
+                .Replace("{layout}", layout, StringComparison.OrdinalIgnoreCase)
+                .Replace("{imdb_id}", imdbId, StringComparison.OrdinalIgnoreCase);
 
             _logger.LogInformation("Generating Btttr.cc URL format: {Url}", btttrUrl);
 
